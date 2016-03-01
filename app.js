@@ -38,7 +38,6 @@ app.use('/', filterRoutes);
 app.use('/', routes);
 app.use('/home', homeRoutes);
 
-
 var SinaCloud = require('scs-sdk');
 SinaCloud.config.loadFromPath('./sinaYun.json');
 var myBucket = new SinaCloud.S3({params: {Bucket: 'miaomiao'}});

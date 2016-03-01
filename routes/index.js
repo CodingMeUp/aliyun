@@ -3,6 +3,9 @@ var moment = require ('moment');//日期转换控件
 var router = express.Router();
 var crypto = require('crypto');
 var User = require('./../db/user_schema.js');
+var Error = require('./../db/frontError.js');
+
+
 //加密
 function encrypt(str, secret) {
   var cipher = crypto.createCipher('aes192', secret);
@@ -52,7 +55,8 @@ router.post('/register/regAction/', function(req, res, next) {
              orgPwd       :     pwd,
              area         :     req.body.area,
              regDate      :     moment().format("YYYY-MM-DD HH:mm:ss"),
-             userAgent    :     req.body.userAgent
+             userAgent    :     req.headers['user-agent'],
+             IP           :     req.connection.remoteAddress
           });
           User.create(dbData,function(err){
             if(err){
@@ -102,5 +106,20 @@ router.get('/loginOut', function(req, res, next) {
     'title'            :         '登录页面'
   });
 });
+
+// 前端异常捕捉
+router.post('/frontError', function(req, res, next) {
+  var dbData = new Error({
+    errorData     :     req.body,
+    userAgent     :     req.headers['user-agent'],
+    IP            :     req.connection.remoteAddress,
+    errorDate     :     moment().format('YYYY-MM-DD HH:mm:ss')
+  });
+
+  Error.create(dbData,function(err){
+      res.json(null);
+  });
+});
+
 
 module.exports = router;

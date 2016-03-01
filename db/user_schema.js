@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/testuser');
 
 var Schema = mongoose.Schema;
 
@@ -9,7 +8,8 @@ var userSchema = new Schema({
     area        :  String,
     regDate     :  String,
     orgPwd      :  String,
-    userAgent   :  String
+    userAgent   :  String,
+    IP          :  String
 });
 
 var User = mongoose.model('user', userSchema,'user');

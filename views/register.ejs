@@ -14,8 +14,8 @@
                     <!-- <img src="/images/NDlogo.png" style="height: 25px;">    --></div></a>
         </div>
     </div>
-<div style="z-index: 1000;position: absolute;top:15%;left :50%;margin: 0 0 0 -190px;">
-    <div style="margin-left: auto;margin-right: auto;width: 300px;height:480px;text-align: center;background-color: rgba(50,50,50,0.6);padding: 20px 40px 60px 40px;position: relative;">
+<div style="z-index: 1000;position: absolute;top:10%;left :50%;margin: 0 0 0 -190px;">
+    <div style="margin-left: auto;margin-right: auto;width: 300px;height:450px;text-align: center;background-color: rgba(50,50,50,0.6);padding: 20px 40px 60px 40px;position: relative;">
         <div style="margin-top: 5px;margin-bottom: 10px;color:#ccc;font-size: 14px;font-weight: 600;">输入注册信息 </div>
         <div style="display: block;height: 340px;margin-bottom: 10px;">
             <form action="/accounts/register/" method="post" id="reg_form" name="regForm"  enctype='multipart/form-data'>
@@ -62,13 +62,18 @@
     </div>
 </div>
 <div style="position: fixed;bottom:20px;width: 100%;">
-    <div class="footbar" style="padding-bottom:20px;text-align: center;">
-        <div>Designed and Developed by <span style="color: #ff65b8">YuNong Chen.</span></div>
-        <div>Copyright © 2016<span style="color: #ff65b8"> 91like.cn</span> All Rights Reserved.</div>
-        <div>闽 ICP 备 16004256 号</div>
-        <img src="/images/dog.png" style="width:40px;margin: 10px 0 -20px 0;" class="max_logo breath">
-        <img src="/images/dogMouth.png" style="width:40px;margin: 10px 0 -20px 0;" class="max_logo breath">
-        <img src="/images/cat.png" style="width:40px;margin: 10px 0 -20px 0;" class="max_logo breath">
+    <div style="position: fixed;bottom:-15px;width: 100%;">
+        <div class="footbar" style="font-size: 14px; padding-bottom:20px;text-align: center;">
+            <div>
+                <img src="/images/dog.png" style="width:40px;" class="max_logo breath">
+                <img src="/images/dogMouth.png" style="width:40px;" class="max_logo breath">
+                <img src="/images/cat.png" style="width:40px;" class="max_logo breath">
+            </div>
+            <span >Designed and Developed by</span>
+            <span style="color: #ff65b8">YuNong Chen.</span>
+            <div>Copyright © 2016<span style="color: #ff65b8"> 91like.cn</span> All Rights Reserved.</div>
+            <div>闽 ICP 备 16004256 号</div>
+        </div>
     </div>
 </div>
 </div>
@@ -152,8 +157,7 @@
                 "username"		:		username,
                 "password"		:		password,
                 "area"		    :		area,
-                "regDate"		:		new Date().getTime(),
-                "userAgent"     :       navigator.userAgent
+                "regDate"		:		new Date().getTime()
                 };
             jQuery.post(regURL,regObj,function regCallback(jsonData){
                 var regFlag	 = 	jsonData.regFlag;
@@ -167,6 +171,55 @@
             alert("请按标准填写正确的用户名！");
         }
     }
+
+    window.onerror = function(msg,url,line,col,error){
+        //没有URL不上报！上报也不知道错误
+        if (msg != "Script error." && !url){
+            return true;
+        }
+        //采用异步的方式
+        //我遇到过在window.onunload进行ajax的堵塞上报
+        //由于客户端强制关闭webview导致这次堵塞上报有Network Error
+        //我猜测这里window.onerror的执行流在关闭前是必然执行的
+        //而离开文章之后的上报对于业务来说是可丢失的
+        //所以我把这里的执行流放到异步事件去执行
+        //脚本的异常数降低了10倍
+        setTimeout(function(){
+            var data = {};
+            //不一定所有浏览器都支持col参数
+            col = col || (window.event && window.event.errorCharacter) || 0;
+
+            data.url = url;
+            data.line = line;
+            data.col = col;
+            if (!!error && !!error.stack){
+                //如果浏览器有堆栈信息
+                //直接使用
+                data.msg = error.stack.toString();
+            }else if (!!arguments.callee){
+                //尝试通过callee拿堆栈信息
+                var ext = [];
+                var f = arguments.callee.caller, c = 3;
+                //这里只拿三层堆栈信息
+                while (f && (--c>0)) {
+                    ext.push(f.toString());
+                    if (f  === f.caller) {
+                        break;//如果有环
+                    }
+                    f = f.caller;
+                }
+                ext = ext.join(",");
+                data.msg = ext;
+            }
+            //把data上报到后台！
+            jQuery.post('/frontError',data,function errorCallback(jsonData){
+
+            },"json");
+        },0);
+
+        return true;
+    };
+
     //]]>
 </script>
 </html>
