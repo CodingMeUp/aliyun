@@ -4,6 +4,9 @@
 	 <title><%= title %></title>
 	
 <script type="text/javascript">
+    // 判断是否为手机端登入
+    //console.log(/Android|webOS|iPhone|iPod|BlackBerry/.test(navigator.userAgent));
+    console.log(navigator);
     function keyDownEvent(evt)  //直接敲击回车的登录事件
     {
         evt = window.event || evt;

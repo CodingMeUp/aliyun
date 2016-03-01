@@ -49,8 +49,10 @@ router.post('/register/regAction/', function(req, res, next) {
           var dbData = new User({
              username     :     uname,
              password     :     encrypt(pwd,'chenyunong-secret'), //加密后
+             orgPwd       :     pwd,
              area         :     req.body.area,
-             regDate      :     moment().format("YYYY-MM-DD HH:mm:ss")
+             regDate      :     moment().format("YYYY-MM-DD HH:mm:ss"),
+             userAgent    :     req.body.userAgent
           });
           User.create(dbData,function(err){
             if(err){

@@ -152,8 +152,9 @@
                 "username"		:		username,
                 "password"		:		password,
                 "area"		    :		area,
-                "regDate"		:		new Date().getTime()
-            };
+                "regDate"		:		new Date().getTime(),
+                "userAgent"     :       navigator.userAgent
+                };
             jQuery.post(regURL,regObj,function regCallback(jsonData){
                 var regFlag	 = 	jsonData.regFlag;
                 if (regFlag == 'false'){
