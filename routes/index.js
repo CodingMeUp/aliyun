@@ -3,6 +3,7 @@ var moment = require ('moment');//日期转换控件
 var router = express.Router();
 var crypto = require('crypto');
 var User = require('./../db/user_schema.js');
+var Count = require('./../db/peopleCount.js');
 var Error = require('./../db/frontError.js');
 
 
@@ -30,6 +31,11 @@ router.get('/', function(req, res, next) {
 
 //访问登录页
 router.get('/userLogin', function(req, res, next) {
+  Count.create({
+    userAgent   :  req.headers['user-agent'],
+    IP          :  req.connection.remoteAddress,
+    enterDate   :  moment().format("YYYY-MM-DD HH:mm:ss")
+  });
   res.render('login', {
         'title'        :         '登录页面'
       });
