@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>tip tools</title>
+    <base target="_blank" />
+    <meta name="Keywords" content="tip tools" />
+    <meta name="Description" content="tip tools" />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+
+
+
+    <link rel="stylesheet" href="just-tip.css">
+
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+
+    <script src="justTools.js"></script>
+    <style>
+        .demo{border:1px solid red;display:inline-block;width:100px;height:40px;margin:100px 10px;}
+        .abc{background:green;border:1px solid green;}
+        .abc .just-top{border-top-color:green;}
+    </style>
+</head>
+
+<body>
+
+<div class="demo demoUp">上边提示</div>
+<div class="demo demoDown">下边提示</div>
+<div class="demo demoLeft">左边提示</div>
+<div class="demo demoRight">右边提示</div>
+
+<div class="demo demoStyle1">提示动画1</div>
+<div class="demo demoStyle2">提示动画2</div>
+<div class="demo demoStyle3">提示动画3</div>
+<div class="demo demoStyle4">提示动画4</div>
+<div class="demo demoStyle5">click提示动画5</div>
+
+<div class="demo justConfirm">click Confirm</div>
+
+<script>
+
+    $(".demoUp").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"moveInTop",
+            width:"500px",
+            contents:_this.text(),
+            gravity:'top'
+        });
+    })
+
+
+    $(".demoDown").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"moveInBottom",
+            //width:"300px",
+            contents:_this.text(),
+            gravity:'bottom'
+        });
+    })
+
+    $(".demoLeft").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"moveInLeft",
+            //width:"300px",
+            contents:_this.text(),
+            gravity:'left'
+        });
+    })
+    $(".demoRight").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"moveInRight",
+            //width:"300px",
+            contents:_this.text(),
+            gravity:'right'
+        });
+    })
+
+
+    $(".demoStyle1").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"fadeIn",
+            contents:_this.text(),
+            theme:"abc",
+            gravity:'top'
+        });
+    })
+
+    $(".demoStyle2").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"flipIn",
+            contents:_this.text(),
+            gravity:'left'
+        });
+    })
+
+    $(".demoStyle3").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"flipIn",
+            //width:"300px",
+            contents:_this.text(),
+            gravity:'top'
+        });
+    })
+
+    $(".demoStyle4").mouseover(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"flipIn",
+            //width:"300px",
+            contents:_this.text(),
+            gravity:'bottom'
+        });
+    })
+
+
+    $(".demoStyle5").click(function(){
+        var _this = $(this);
+        _this.justToolsTip({
+            animation:"flipIn",
+            contents:_this.text(),
+            gravity:'right'
+        });
+    })
+
+
+
+    $(".justConfirm").click(function(){
+        var _this = $(this);
+        var abc = _this.justToolsTip({
+            animation:"moveInTop",
+            contents:"确定要删除吗？",
+            gravity:'top',
+            confirm:true,
+            onYes:function(self){
+                console.log(self);
+                alert("Yes")
+            },
+            noNO:function(self){
+                console.log(self);
+                alert("NO")
+            }
+        })
+        console.log(abc);
+    })
+
+</script>
+
+</body>
+</html>
