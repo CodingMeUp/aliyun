@@ -58,6 +58,14 @@ router.get('/upload', function (req, res, next) {
     }
   });
 });
+
+//游戏页面
+router.get('/game', function (req, res, next) {
+      res.render('game', {
+        'title'            :         '游戏首页',
+      });
+});
+
 //上传接受文件
 router.post('/uploadAction',  uploadMulter, function(req, res) {
   console.log('上传按钮调用');
